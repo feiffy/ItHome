@@ -156,7 +156,7 @@ class ItHome {
             preg_match("/<strong class=\"nick\"><a title=\"软媒通行证数字ID：\d+\" target=\"_blank\" href=\"http:\/\/quan.ithome.com\/user\/\d+\">(.+?)<\/a><\/strong>/i", $review, $match_user);
             $phone = isset($match_phone[1]) ? $match_phone[1] : 0;
             $user = isset($match_user[1]) ? $match_user[1] : 0;
-            $phone = iconv("utf-8", "gbk", $phone);
+            $phone = iconv("utf-8", "gbk", $phone); // 使用gbk编码，以便于后面的中文排序
             if (!empty($phone) && !empty($user)) {
                 if (isset($info[$flag][$phone])) {
                     if (!in_array($user, $info[$flag][$phone]["user"])) {
@@ -216,7 +216,7 @@ class ItHome {
             }
             foreach($val as $key2 => $val2) {
                 $utf8_key = iconv("gbk", "utf-8", $key2);
-                $utf8_info[$key][$utf8_key] = $val2;
+                $utf8_info[$key][$utf8_key] = $val2; // 排序完转换为utf-8编码，以便于页面显示
             }
         }
 
