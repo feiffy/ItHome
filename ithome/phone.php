@@ -207,70 +207,70 @@ class ItHome {
             $info = $this->mergeInfo($info, $info_new);
         }
 
-        $utf8_info = [];
+        // $utf8_info = [];
         foreach($info as $key => $val) { // 排序
             ksort($info[$key]);
-            if (!$val) {
-                $utf8_info[$key] = $val;
-                continue;
-            }
-            foreach($val as $key2 => $val2) {
-                $utf8_key = iconv("gbk", "utf-8", $key2);
-                $utf8_info[$key][$utf8_key] = $val2; // 排序完转换为utf-8编码，以便于页面显示
-            }
+            // if (!$val) {
+            //     $utf8_info[$key] = $val;
+            //     continue;
+            // }
+            // foreach($val as $key2 => $val2) {
+            //     $utf8_key = iconv("gbk", "utf-8", $key2);
+            //     $utf8_info[$key][$utf8_key] = $val2; // 排序完转换为utf-8编码，以便于页面显示
+            // }
         }
 
-        unset($info);
-        $info = $utf8_info;
-        unset($utf8_info);
+        // unset($info);
+        // $info = $utf8_info;
+        // unset($utf8_info);
 
         $total = []; // 统计各厂商手机总数量
         foreach($info["mobile android"] as $phone => $phone_info) {
-            if (strpos($phone, "小米") === 0 || strpos($phone, "红米") === 0) {
-                $total["小米手机总计"] += 1;
+            if (strpos($phone, iconv("utf-8", "gbk", "小米")) === 0 || strpos($phone, iconv("utf-8", "gbk", "红米")) === 0) {
+                $total["小米手机总计"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "华为") === 0 || strpos($phone, "荣耀") === 0) {
-                $total["华为手机总计"] += 1;
+            elseif (strpos($phone, iconv("utf-8", "gbk", "华为")) === 0 || strpos($phone, iconv("utf-8", "gbk", "荣耀")) === 0) {
+                $total["华为手机总计"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "OPPO") === 0) {
-                $total["OPPO手机总计"] += 1;
+                $total["OPPO手机总计"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "vivo") === 0) {
-                $total["vivo手机总计"] += 1;
+                $total["vivo手机总计"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "三星") === 0) {
-                $total["三星手机总计"] += 1;
+            elseif (strpos($phone, iconv("utf-8", "gbk", "三星")) === 0) {
+                $total["三星手机总计"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "索尼") === 0) {
-                $total["索尼手机总计"] += 1;
+            elseif (strpos($phone, iconv("utf-8", "gbk", "索尼")) === 0) {
+                $total["索尼手机总计"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "魅蓝") === 0 || strpos($phone, "魅族") === 0) {
-                $total["魅族手机总计"] += 1;
+            elseif (strpos($phone, iconv("utf-8", "gbk", "魅蓝")) === 0 || strpos($phone, iconv("utf-8", "gbk", "魅族")) === 0) {
+                $total["魅族手机总计"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "中兴") === 0) {
-                $total["中兴手机总计"] += 1;
+            elseif (strpos($phone, iconv("utf-8", "gbk", "中兴")) === 0) {
+                $total["中兴手机总计"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "LG") === 0) {
-                $total["LG手机总计"] += 1;
+                $total["LG手机总计"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "HTC") === 0) {
-                $total["HTC手机总计"] += 1;
+                $total["HTC手机总计"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "360") === 0) {
-                $total["360手机总计"] += 1;
+                $total["360手机总计"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "金立") === 0) {
-                $total["金立手机总计"] += 1;
+            elseif (strpos($phone, iconv("utf-8", "gbk", "金立")) === 0) {
+                $total["金立手机总计"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "nubia") === 0 || strpos($phone, "努比亚") === 0) {
-                $total["努比亚手机总计"] += 1;
+            elseif (strpos($phone, "nubia") === 0 || strpos($phone, iconv("utf-8", "gbk", "努比亚")) === 0) {
+                $total["努比亚手机总计"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "联想") === 0 || strpos($phone, "ZUK") === 0 || strpos($phone, "Moto") === 0) {
-                $total["联想手机总计"] += 1;
+            elseif (strpos($phone, iconv("utf-8", "gbk", "联想")) === 0 || strpos($phone, "ZUK") === 0 || strpos($phone, "Moto") === 0) {
+                $total["联想手机总计"] += count($phone_info["user"]);
             }
         }
         foreach ($info["mobile iphone"] as $phone => $phone_info) {
-            $total["苹果手机总计"] += count($phone_info);
+            $total["苹果手机总计"] += count($phone_info["user"]);
         }
         foreach ($info["mobile wp"] as $phone => $phone_info) {
             $total["WP手机总计"] += count($phone_info);
@@ -284,7 +284,7 @@ class ItHome {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <style>
@@ -329,7 +329,7 @@ class ItHome {
         </tr>
 <?php           foreach($info[$key] as $phone => $phone_info): ?>
         <tr>
-            <td><?php echo $phone; ?></td>
+            <td><?php echo iconv("gbk", "utf-8", $phone); ?></td>
             <td><?php echo count($phone_info["user"]); ?></td>
             <td><?php echo implode(", ", $phone_info["user"]); ?></td>
 <?php           endforeach;?>
