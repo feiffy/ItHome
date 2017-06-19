@@ -1,5 +1,5 @@
 <?php
-// Í³¼ÆithomeÊÖ»úĞÍºÅ
+// ç»Ÿè®¡ithomeæ‰‹æœºå‹å·
 header("Content-Type: text/html; charset=utf-8");
 
 class ItHome {
@@ -19,7 +19,7 @@ class ItHome {
         return $html;
     }
 
-    // »ñÈ¡×ÓÒ³Ãæid
+    // è·å–å­é¡µé¢id
     public function getPageIds($html)
     {
         $ids = [];
@@ -49,7 +49,7 @@ class ItHome {
         return $ids;
     }
 
-    // »ñµÃÒ³ÃæµÄÆÀÂÛ
+    // è·å¾—é¡µé¢çš„è¯„è®º
     public function getPageReview($newsId, $page)
     {
         $curl = curl_init();
@@ -90,7 +90,7 @@ class ItHome {
         }
     }
 
-    // »ñµÃÒ³ÃæËùÓĞÆÀÂÛ
+    // è·å¾—é¡µé¢æ‰€æœ‰è¯„è®º
     public function getPageReviews($newsId)
     {
         $reviewsHtml = "";
@@ -102,7 +102,7 @@ class ItHome {
         return $reviewsHtml;
     }
 
-    // ´ÓÆÀÂÛÖĞ»ñÈ¡ÓĞÓÃĞÅÏ¢
+    // ä»è¯„è®ºä¸­è·å–æœ‰ç”¨ä¿¡æ¯
     public function convertToInfo($reviewsHtml)
     {
         $info = [
@@ -153,10 +153,10 @@ class ItHome {
             }
 
             preg_match("/href=\"http:\/\/m\.ithome\.com\/ithome\/download\/\">(.*?)<\/a>/i", $review, $match_phone);
-            preg_match("/<strong class=\"nick\"><a title=\"ÈíÃ½Í¨ĞĞÖ¤Êı×ÖID£º\d+\" target=\"_blank\" href=\"http:\/\/quan.ithome.com\/user\/\d+\">(.+?)<\/a><\/strong>/i", $review, $match_user);
+            preg_match("/<strong class=\"nick\"><a title=\"è½¯åª’é€šè¡Œè¯æ•°å­—IDï¼š\d+\" target=\"_blank\" href=\"http:\/\/quan.ithome.com\/user\/\d+\">(.+?)<\/a><\/strong>/i", $review, $match_user);
             $phone = isset($match_phone[1]) ? $match_phone[1] : 0;
             $user = isset($match_user[1]) ? $match_user[1] : 0;
-            $phone = iconv("utf-8", "gbk", $phone); // Ê¹ÓÃgbk±àÂë£¬ÒÔ±ãÓÚºóÃæµÄÖĞÎÄÅÅĞò
+            $phone = iconv("utf-8", "gbk", $phone); // ä½¿ç”¨gbkç¼–ç ï¼Œä»¥ä¾¿äºåé¢çš„ä¸­æ–‡æ’åº
             if (!empty($phone) && !empty($user)) {
                 if (isset($info[$flag][$phone])) {
                     if (!in_array($user, $info[$flag][$phone]["user"])) {
@@ -207,79 +207,66 @@ class ItHome {
             $info = $this->mergeInfo($info, $info_new);
         }
 
-        // $utf8_info = [];
-        foreach($info as $key => $val) { // ÅÅĞò
+        foreach($info as $key => $val) { // æ’åº
             ksort($info[$key]);
-            // if (!$val) {
-            //     $utf8_info[$key] = $val;
-            //     continue;
-            // }
-            // foreach($val as $key2 => $val2) {
-            //     $utf8_key = iconv("gbk", "utf-8", $key2);
-            //     $utf8_info[$key][$utf8_key] = $val2; // ÅÅĞòÍê×ª»»Îªutf-8±àÂë£¬ÒÔ±ãÓÚÒ³ÃæÏÔÊ¾
-            // }
         }
 
-        // unset($info);
-        // $info = $utf8_info;
-        // unset($utf8_info);
-
-        $total = []; // Í³¼Æ¸÷³§ÉÌÊÖ»ú×ÜÊıÁ¿
+        $total = []; // ç»Ÿè®¡å„å‚å•†æ‰‹æœºæ€»æ•°é‡
         foreach($info["mobile android"] as $phone => $phone_info) {
-            if (strpos($phone, iconv("utf-8", "gbk", "Ğ¡Ã×")) === 0 || strpos($phone, iconv("utf-8", "gbk", "ºìÃ×")) === 0) {
-                $total["Ğ¡Ã×ÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            if (strpos($phone, iconv("utf-8", "gbk", "å°ç±³")) === 0 || strpos($phone, iconv("utf-8", "gbk", "çº¢ç±³")) === 0) {
+                $total["å°ç±³æ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, iconv("utf-8", "gbk", "»ªÎª")) === 0 || strpos($phone, iconv("utf-8", "gbk", "ÈÙÒ«")) === 0) {
-                $total["»ªÎªÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            elseif (strpos($phone, iconv("utf-8", "gbk", "åä¸º")) === 0 || strpos($phone, iconv("utf-8", "gbk", "è£è€€")) === 0) {
+                $total["åä¸ºæ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "OPPO") === 0) {
-                $total["OPPOÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+                $total["OPPOæ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "vivo") === 0) {
-                $total["vivoÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+                $total["vivoæ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, iconv("utf-8", "gbk", "ÈıĞÇ")) === 0) {
-                $total["ÈıĞÇÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            elseif (strpos($phone, iconv("utf-8", "gbk", "ä¸‰æ˜Ÿ")) === 0) {
+                $total["ä¸‰æ˜Ÿæ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, iconv("utf-8", "gbk", "Ë÷Äá")) === 0) {
-                $total["Ë÷ÄáÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            elseif (strpos($phone, iconv("utf-8", "gbk", "ç´¢å°¼")) === 0) {
+                $total["ç´¢å°¼æ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, iconv("utf-8", "gbk", "÷ÈÀ¶")) === 0 || strpos($phone, iconv("utf-8", "gbk", "÷È×å")) === 0) {
-                $total["÷È×åÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            elseif (strpos($phone, iconv("utf-8", "gbk", "é­…è“")) === 0 || strpos($phone, iconv("utf-8", "gbk", "é­…æ—")) === 0) {
+                $total["é­…æ—æ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, iconv("utf-8", "gbk", "ÖĞĞË")) === 0) {
-                $total["ÖĞĞËÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            elseif (strpos($phone, iconv("utf-8", "gbk", "ä¸­å…´")) === 0) {
+                $total["ä¸­å…´æ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "LG") === 0) {
-                $total["LGÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+                $total["LGæ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "HTC") === 0) {
-                $total["HTCÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+                $total["HTCæ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
             elseif (strpos($phone, "360") === 0) {
-                $total["360ÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+                $total["360æ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, iconv("utf-8", "gbk", "½ğÁ¢")) === 0) {
-                $total["½ğÁ¢ÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            elseif (strpos($phone, iconv("utf-8", "gbk", "é‡‘ç«‹")) === 0) {
+                $total["é‡‘ç«‹æ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, "nubia") === 0 || strpos($phone, iconv("utf-8", "gbk", "Å¬±ÈÑÇ")) === 0) {
-                $total["Å¬±ÈÑÇÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            elseif (strpos($phone, "nubia") === 0 || strpos($phone, iconv("utf-8", "gbk", "åŠªæ¯”äºš")) === 0) {
+                $total["åŠªæ¯”äºšæ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
-            elseif (strpos($phone, iconv("utf-8", "gbk", "ÁªÏë")) === 0 || strpos($phone, "ZUK") === 0 || strpos($phone, "Moto") === 0) {
-                $total["ÁªÏëÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            elseif (strpos($phone, iconv("utf-8", "gbk", "è”æƒ³")) === 0 || strpos($phone, "ZUK") === 0 || strpos($phone, "Moto") === 0) {
+                $total["è”æƒ³æ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
             }
         }
         foreach ($info["mobile iphone"] as $phone => $phone_info) {
-            $total["Æ»¹ûÊÖ»ú×Ü¼Æ"] += count($phone_info["user"]);
+            $total["è‹¹æœæ‰‹æœºæ€»è®¡"] += count($phone_info["user"]);
         }
         foreach ($info["mobile wp"] as $phone => $phone_info) {
-            $total["WPÊÖ»ú×Ü¼Æ"] += count($phone_info);
+            $total["WPæ‰‹æœºæ€»è®¡"] += count($phone_info);
         }
         foreach ($info["mobile win10"] as $phone => $phone_info) {
-            $total["WPÊÖ»ú×Ü¼Æ"] += count($phone_info);
+            $total["WPæ‰‹æœºæ€»è®¡"] += count($phone_info);
         }
 
-        $title = "ITÖ®¼Ò×î½üĞÂÎÅÆÀÂÛÇøÊÖ»ú»úĞÍÍ³¼Æ£¨×î½ü" . $pages . "Æª£©";
+        $title = "ITä¹‹å®¶æœ€è¿‘æ–°é—»è¯„è®ºåŒºæ‰‹æœºæœºå‹ç»Ÿè®¡ï¼ˆæœ€è¿‘" . $pages . "ç¯‡ï¼‰";
         ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -305,8 +292,8 @@ class ItHome {
     <h1><?php echo $title;?></h1>
     <table>
         <tr>
-            <th>³§ÉÌ</th>
-            <th>ÊıÁ¿</th>
+            <th>å‚å•†</th>
+            <th>æ•°é‡</th>
         </tr>
 <?php   foreach($total as $vendor => $number): ?>
         <tr>
@@ -318,10 +305,10 @@ class ItHome {
     <table>
 <?php   foreach($info as $key => $item): ?>
         <tr>
-            <th>·ÖÀà</th>
-            <th>»úĞÍ</th>
-            <th>ÊıÁ¿</th>
-            <th>ÓÃ»§Ãû</th>
+            <th>åˆ†ç±»</th>
+            <th>æœºå‹</th>
+            <th>æ•°é‡</th>
+            <th>ç”¨æˆ·å</th>
         </tr>
 <?php       if (count($info[$key])): ?>
         <tr>
